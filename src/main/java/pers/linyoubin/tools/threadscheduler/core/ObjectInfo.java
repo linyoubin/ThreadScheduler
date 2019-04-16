@@ -5,14 +5,20 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class ObjectInfo {
-    List<MethodInfo> methodList = new ArrayList<>();
+import pers.linyoubin.tools.threadscheduler.exception.SchException;
+
+class ObjectInfo {
+    private List<MethodInfo> methodList = new ArrayList<>();
 
     void addMethod(MethodInfo methodInfo) {
         methodList.add(methodInfo);
     }
 
-    void sortByStep() {
+    List<MethodInfo> getMothList() {
+        return methodList;
+    }
+
+    void sortByStep() throws SchException {
         Collections.sort(methodList, new Comparator<MethodInfo>() {
             @Override
             public int compare(MethodInfo l, MethodInfo r) {
@@ -27,5 +33,19 @@ public class ObjectInfo {
                 }
             }
         });
+
+        if (methodList.size() > 0) {
+            int prevStep = methodList.get(0).getStep();
+            for (int i = 1; i < methodList.size(); i++) {
+                MethodInfo m = methodList.get(i);
+                int step = m.getStep();
+                if (prevStep == step) {
+                    throw new SchException("can't exist same step in one Object:Object="
+                            + m.getObject() + ",step=" + step);
+                }
+
+                prevStep = step;
+            }
+        }
     }
 }

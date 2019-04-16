@@ -44,7 +44,7 @@ class BlockInfo {
     }
 }
 
-public class MethodInfo {
+class MethodInfo {
     private Object o;
     private Method m;
 
@@ -77,7 +77,7 @@ public class MethodInfo {
         return blockInfo.getBlockConfirmTime();
     }
 
-    public int getConStep() {
+    public int getContStep() {
         return blockInfo.getContStep();
     }
 

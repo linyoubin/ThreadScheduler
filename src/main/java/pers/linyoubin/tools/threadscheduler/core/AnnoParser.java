@@ -29,8 +29,6 @@ class AnnoParser {
             }
         }
 
-        info.sortByStep();
-
         return info;
     }
 }
