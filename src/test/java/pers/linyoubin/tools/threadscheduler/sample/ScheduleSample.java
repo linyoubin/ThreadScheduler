@@ -1,10 +1,3 @@
-# ThreadScheduler #
-
-实现一个多线程调度框架，可以按照自定义的顺序控制多线程之间的调度。支持多线程在并发执行和串行执行之间的自由切换。
-
-+ 样例代码
-    
-``` java
 package pers.linyoubin.tools.threadscheduler.sample;
 
 import pers.linyoubin.tools.threadscheduler.annotation.ExecuteOrder;
@@ -52,17 +45,3 @@ public class ScheduleSample {
         ts.run();
     }
 }
-
-```
-
-+ 输出结果
-
-``` java
-// step1 -> step4 严格按顺序执行
-// 两个 job 的 step3 会并发执行，多次执行打印顺序会有变化
-pers.linyoubin.tools.threadscheduler.sample.Job1@3215b9e0:step1
-pers.linyoubin.tools.threadscheduler.sample.Job2@5a9e40d2:step2
-pers.linyoubin.tools.threadscheduler.sample.Job2@5a9e40d2:step3
-pers.linyoubin.tools.threadscheduler.sample.Job1@3215b9e0:step3
-pers.linyoubin.tools.threadscheduler.sample.Job1@3215b9e0:step4
-```

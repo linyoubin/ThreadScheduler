@@ -52,7 +52,7 @@ public class ThreadScheduler {
             // start to do jobs step by step
             List<Integer> stepList = jobInfo.getStepList();
             for (Integer step : stepList) {
-                logger.info("step {}:", step);
+                logger.debug("step {}:", step);
                 context = jobInfo.createJobContext(this, step);
                 if (logger.isDebugEnabled()) {
                     //TODO: context.toString()
@@ -78,15 +78,15 @@ public class ThreadScheduler {
             throw e;
         }
         finally {
-            logger.info("shutting down all threads");
+            logger.debug("shutting down all threads");
             service.shutdown();
             SchTool.sleepSilence(100);
             while (!service.isTerminated()) {
                 SchTool.sleepSilence(2000);
-                logger.info("wait all workers quit");
+                logger.warn("wait all workers quit");
             }
 
-            logger.info("all threads are shutted down");
+            logger.debug("all threads are shutted down");
         }
     }
 
