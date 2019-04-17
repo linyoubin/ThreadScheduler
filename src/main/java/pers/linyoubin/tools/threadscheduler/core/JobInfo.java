@@ -118,10 +118,10 @@ class JobInfo {
     }
 
     private void addToContMap(MethodInfo mInfo) {
-        Set<MethodInfo> methodSet = contMethodsMap.get(mInfo.getStep());
+        Set<MethodInfo> methodSet = contMethodsMap.get(mInfo.getContStep());
         if (null == methodSet) {
             methodSet = new HashSet<>();
-            contMethodsMap.put(mInfo.getStep(), methodSet);
+            contMethodsMap.put(mInfo.getContStep(), methodSet);
         }
 
         methodSet.add(mInfo);

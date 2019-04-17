@@ -1,0 +1,8 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+<suite name="First suite" verbose="1" >
+<test name = "allTestsInAPackage" >
+   <packages>
+      <package name = "pers.linyoubin.tools.threadscheduler.test" />
+   </packages>
+</test>
+</suite>
