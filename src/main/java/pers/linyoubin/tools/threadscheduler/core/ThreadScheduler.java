@@ -32,7 +32,7 @@ public class ThreadScheduler {
 
     public void addJob(Object o) throws SchException {
         ObjectInfo info = AnnoParser.parse(o);
-        // add step 0 for job's same starting line 
+        // add step 0 for job's same starting line
         info.addMethod(new MethodInfo(o, null, 0, "innerStep"));
 
         Worker w = new Worker(this, o, info);
@@ -55,7 +55,7 @@ public class ThreadScheduler {
                 logger.debug("step {}:", step);
                 context = jobInfo.createJobContext(this, step);
                 if (logger.isDebugEnabled()) {
-                    //TODO: context.toString()
+                    // TODO: context.toString()
                     logger.debug("\n{}", context);
                 }
 
@@ -71,14 +71,12 @@ public class ThreadScheduler {
                     SchTool.sleepSilence(sleepTime);
                 }
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             notifyAllWorkerQuit();
             logger.error("run schedule failed", e);
             throw e;
-        }
-        finally {
-            logger.debug("shutting down all threads");
+        } finally {
+            logger.info("shutting down all threads");
             service.shutdown();
             SchTool.sleepSilence(100);
             while (!service.isTerminated()) {
@@ -86,7 +84,7 @@ public class ThreadScheduler {
                 logger.warn("wait all workers quit");
             }
 
-            logger.debug("all threads are shutted down");
+            logger.info("all threads are shutted down");
         }
     }
 
@@ -116,18 +114,16 @@ public class ThreadScheduler {
 
                 actualWaitTime += PERIOD_WAIT_TIME;
             }
-        }
-        catch (SchException e) {
+        } catch (SchException e) {
             throw e;
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             throw new SchException("wait failed", e);
         }
 
         MethodInfo remainMethod = context.displayRemainMethod();
         if (null != remainMethod) {
-            throw new SchException("wait worker timeout in step " + context.getStep() + ",method="
-                    + remainMethod);
+            throw new SchException(
+                    "wait worker timeout in step " + context.getStep() + ",method=" + remainMethod);
         }
 
         return actualWaitTime;

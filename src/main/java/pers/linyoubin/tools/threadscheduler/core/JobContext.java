@@ -62,14 +62,13 @@ class JobContext {
             }
 
             if (!startMethods.contains(m)) {
-                throw new SchException("method should not be started in step:" + step + ",method="
-                        + m);
+                throw new SchException(
+                        "method should not be started in step:" + step + ",method=" + m);
             }
 
             startMethods.remove(m);
             checkOrNotifySchedule();
-        }
-        finally {
+        } finally {
             lock.unlock();
         }
     }
@@ -83,22 +82,26 @@ class JobContext {
             }
 
             if (!finishMethods.contains(m)) {
-                throw new SchException("method should not be finished in step:" + step + ",method="
-                        + m);
+                throw new SchException(
+                        "method should not be finished in step:" + step + ",method=" + m);
             }
 
             finishMethods.remove(m);
 
             checkOrNotifySchedule();
-        }
-        finally {
+        } finally {
             lock.unlock();
         }
     }
 
     private void checkOrNotifySchedule() {
-        if (startMethods.size() == 0 && finishMethods.size() == 0) {
-            ts.notifySchedule();
+        lock.lock();
+        try {
+            if (startMethods.size() == 0 && finishMethods.size() == 0) {
+                ts.notifySchedule();
+            }
+        } finally {
+            lock.unlock();
         }
     }
 
@@ -113,8 +116,7 @@ class JobContext {
             if (startMethods.size() == 0 && finishMethods.size() == 0) {
                 return true;
             }
-        }
-        finally {
+        } finally {
             lock.unlock();
         }
 
@@ -140,8 +142,7 @@ class JobContext {
             }
 
             return lastMethod;
-        }
-        finally {
+        } finally {
             lock.unlock();
         }
     }

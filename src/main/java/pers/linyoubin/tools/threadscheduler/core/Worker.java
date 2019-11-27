@@ -49,8 +49,7 @@ class Worker extends Thread {
             executeMethod(o, method.getMethod());
             if (!method.isExpectBlock()) {
                 ts.finishJob(method.getStep(), method);
-            }
-            else {
+            } else {
                 ts.finishJob(method.getContStep(), method);
             }
         }
@@ -64,8 +63,7 @@ class Worker extends Thread {
         try {
             m.setAccessible(true);
             m.invoke(o);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             throw new SchException("invoke " + o + "." + m.getName() + " failed", e);
         }
     }
@@ -73,27 +71,20 @@ class Worker extends Thread {
     private void waitForMyStep(int step) throws SchException {
         try {
             synchronized (this) {
-                if (ts.getStep() == step) {
-                    return;
-                }
+                while (ts.getStep() != step) {
+                    if (!runningFlag) {
+                        return;
+                    }
 
-                if (!runningFlag) {
-                    return;
-                }
-
-                this.wait();
-
-                if (!runningFlag) {
-                    return;
+                    this.wait(2000);
                 }
             }
 
             if (ts.getStep() != step) {
-                throw new SchException("step is mismatch:schedule's step:" + ts.getStep()
-                        + ",myStep:" + step);
+                throw new SchException(
+                        "step is mismatch:schedule's step:" + ts.getStep() + ",myStep:" + step);
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             throw new SchException("wait for step failed:step=" + step, e);
         }
     }
@@ -102,8 +93,7 @@ class Worker extends Thread {
     public void run() {
         try {
             innerRun();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             logger.error("execute worker failed:worker=\n{}", this, e);
             ts.saveErrInfo(step, method, e);
         }
